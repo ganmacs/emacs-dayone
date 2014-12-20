@@ -4,7 +4,7 @@
 
 ;; Author: ganmacs <ganmacs_at_gmail.com>
 ;; Maintainer: ganmacs <ganmacs_at_gmail.com>
-;; URL:
+;; URL: https://github.com/ganmacs/emacs-dayone
 ;; Version: 0.0.1
 ;; Keywords: dayone
 
@@ -31,19 +31,20 @@
 (defvar emacs-dayone-succes-reg "^New entry :")
 
 ;;;###autoload
-(defun emacs-dayone/save ()
+(defun emacs-dayone/save (&optional b e)
   "Run dayone command"
-  (interactive)
-  (let* ((start (point-min))
-         (end   (point-max))
+  (interactive "r")
+  (let* ((start (if mark-active b (point-min)))
+         (end   (if mark-active e (point-max)))
          (contents (buffer-substring start end))
          (tmp-file (make-temp-file "emacs-dayone"))
          (cmd (format "%s < %s" emacs-dayone-cmd tmp-file)))
     (with-temp-file tmp-file (insert contents))
+    (message (number-to-string  start))
     (if (string-match emacs-dayone-succes-reg
                       (shell-command-to-string cmd))
         (message "Success: contents saved")
-        (message "Failed: can't saved"))
+      (message "Failed: can't saved"))
     (delete-file tmp-file)))
 
 (provide 'emacs-dayone)
