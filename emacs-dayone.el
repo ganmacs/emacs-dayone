@@ -27,6 +27,24 @@
 
 ;;; Code:
 
+(defvar emacs-dayone-cmd "/usr/local/bin/dayone new")
+(defvar emacs-dayone-succes-reg "^New entry :")
+
+;;;###autoload
+(defun emacs-dayone/save ()
+  "Run dayone command"
+  (interactive)
+  (let* ((start (point-min))
+         (end   (point-max))
+         (contents (buffer-substring start end))
+         (tmp-file (make-temp-file "emacs-dayone"))
+         (cmd (format "%s < %s" emacs-dayone-cmd tmp-file)))
+    (with-temp-file tmp-file (insert contents))
+    (if (string-match emacs-dayone-succes-reg
+                      (shell-command-to-string cmd))
+        (message "Success: contents saved")
+        (message "Failed: can't saved"))
+    (delete-file tmp-file)))
 
 (provide 'emacs-dayone)
 ;;; emacs-dayone.el ends here
