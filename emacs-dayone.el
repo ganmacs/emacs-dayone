@@ -4,7 +4,7 @@
 
 ;; Author: ganmacs <ganmacs_at_gmail.com>
 ;; Maintainer: ganmacs <ganmacs_at_gmail.com>
-;; URL: https://github.com/ganmacs/emacs-git-grep
+;; URL:
 ;; Version: 0.0.1
 ;; Keywords: dayone
 
